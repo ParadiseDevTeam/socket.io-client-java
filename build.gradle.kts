@@ -24,20 +24,14 @@ repositories {
     }
 }
 
-configurations.all {
-    resolutionStrategy {
-        // Maven's "nearest wins" picked this project's own org.json version over
-        // engine.io-client's transitive one; Gradle picks highest by default, so force it.
-        force("org.json:json:20090211")
-    }
-}
-
 dependencies {
     api("io.socket:engine.io-client:1.0.2-patch.1")
-    implementation("org.json:json:20090211")
+    implementation("org.json:json:20260814")
 
-    testImplementation("junit:junit:4.12")
-    testImplementation("org.hamcrest:hamcrest-library:1.3")
+    testImplementation("junit:junit:4.13.2") {
+        exclude(group = "org.hamcrest", module = "hamcrest-core")
+    }
+    testImplementation("org.hamcrest:hamcrest-library:2.2")
     testImplementation("org.skyscreamer:jsonassert:1.5.0")
 }
 

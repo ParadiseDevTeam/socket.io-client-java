@@ -9,7 +9,6 @@ import org.junit.runners.JUnit4;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -20,8 +19,12 @@ public class ByteArrayTest {
 
     @Test
     public void encodeByteArray() {
+        JSONArray data = new JSONArray();
+        data.put("abc");
+        data.put("abc".getBytes(StandardCharsets.UTF_8));
+
         Packet<JSONArray> packet = new Packet<>(Parser.BINARY_EVENT);
-        packet.data = new JSONArray(asList("abc", "abc".getBytes(StandardCharsets.UTF_8)));
+        packet.data = data;
         packet.id = 23;
         packet.nsp = "/cool";
         Helpers.testBin(packet);
@@ -29,8 +32,12 @@ public class ByteArrayTest {
 
     @Test
     public void encodeByteArray2() {
+        JSONArray data = new JSONArray();
+        data.put("2");
+        data.put(new byte[] { 0, 1 });
+
         Packet<JSONArray> packet = new Packet<>(Parser.BINARY_EVENT);
-        packet.data = new JSONArray(asList("2", new byte[] { 0, 1 }));
+        packet.data = data;
         packet.id = 0;
         packet.nsp = "/";
         Helpers.testBin(packet);
