@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "io.socket"
-version = "1.0.2"
+version = "1.0.2-patch.1"
 description = "Socket.IO Client Library for Java"
 
 java {

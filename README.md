@@ -21,7 +21,7 @@ repositories {
 }
 
 dependencies {
-    implementation("io.socket:socket.io-client:1.0.2")
+    implementation("io.socket:socket.io-client:1.0.2-patch.1")
 }
 ```
 
