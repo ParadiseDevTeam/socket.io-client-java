@@ -2,12 +2,14 @@ package io.socket.client;
 
 
 import io.socket.parser.Parser;
+import io.socket.thread.EventThread;
 import okhttp3.Call;
 import okhttp3.WebSocket;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,6 +59,10 @@ public class IO {
             opts = new Options();
         }
 
+        if (opts.eventExecutor != null) {
+            EventThread.setExecutor(opts.eventExecutor);
+        }
+
         Url.ParsedURI parsed = Url.parse(uri);
         URI source = parsed.uri;
         String id = parsed.id;
@@ -98,5 +104,17 @@ public class IO {
          * Whether to enable multiplexing. Default is true.
          */
         public boolean multiplex = true;
+
+        /**
+         * Executor used to run all socket callbacks (open/message/close/error and
+         * every {@link Socket#on} listener), in place of the library's internal
+         * single-thread executor. Equivalent to calling
+         * {@link EventThread#setExecutor(Executor)} yourself before connecting.
+         * <p>
+         * This is a process-wide setting shared by every socket in the JVM, not
+         * scoped to this {@link Socket} or {@link Manager} instance. Leave unset
+         * ({@code null}) to keep the default internal executor.
+         */
+        public Executor eventExecutor;
     }
 }
