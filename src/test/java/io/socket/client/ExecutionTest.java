@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Logger;
@@ -35,8 +36,10 @@ public class ExecutionTest extends Connection {
     }
 
     private void exec(String mainClass) throws InterruptedException, IOException {
-        Process process = Runtime.getRuntime().exec(String.format("mvn --quiet exec:java" +
-                " -Dexec.mainClass=%s -Dexec.classpathScope=test", mainClass), createEnv());
+        String javaBin = System.getProperty("java.home") + File.separator + "bin" + File.separator + "java";
+        String classpath = System.getProperty("java.class.path");
+        Process process = Runtime.getRuntime().exec(
+                new String[]{javaBin, "-cp", classpath, mainClass}, createEnv());
         BufferedReader input = new BufferedReader(
                 new InputStreamReader(process.getInputStream()));
         String line;

@@ -1,0 +1,26 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Setup java
+        uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Publish to repo.prdis.me
+        run: ./gradlew publish
+        env:
+          REPO_PRDIS_USERNAME: ${{ secrets.REPO_PRDIS_USERNAME }}
+          REPO_PRDIS_PASSWORD: ${{ secrets.REPO_PRDIS_PASSWORD }}
